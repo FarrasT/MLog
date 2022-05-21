@@ -1,0 +1,33 @@
+.card {
+  background-color: rgb(226, 225, 225);
+  width: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  -webkit-box-shadow: 0 10px 6px -6px #777;
+  -moz-box-shadow: 0 10px 6px -6px #777;
+  box-shadow: 0 10px 6px -6px #777;
+  margin-bottom: 30px;
+}
+
+.card h1 {
+  text-align: center;
+}
+
+.card p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: justify;
+  white-space: pre-line;
+}
+
+.writer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline;
+  text-align: left;
+}
+
+.tags {
+  text-align: right;
+  margin-top: 10px;
+}
