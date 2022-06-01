@@ -8,31 +8,37 @@ import PostData from '../api/postData';
 import EditData from '../api/editData';
 
 const TextInput = (props) => {
-  const editorRef = useRef();
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState('');
   const [isFilled, setIsFilled] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [text, setText] = useState();
 
   const onClickHandler = (event) => {
     setIsClicked(true);
     if (
-      (tags === '' || title === '' || editorRef.current.getContent() === '') &&
+      (tags === '' || title === '' || text === '') &&
       props.textFieldTitle === ''
     ) {
       return;
     }
     setIsFilled(true);
     const data = {
-      title: title,
-      content: editorRef.current.getContent(),
-      tags: tags,
+      title: props.textFieldTitle !== '' ? props.textFieldTitle : title,
+      content: props.textFieldContent !== '' ? props.textFieldContent : text,
+      tags: props.textFieldTags !== '' ? props.textFieldTags : tags,
       writer: 'Farras Timorremboko',
       date: getDate(),
     };
-    title ? EditData(data, props.id) : PostData(data);
+    props.isEdited
+      ? EditData(data, props.id)
+      : PostData(data, props.contentLength);
 
     props.onBackHandler();
+    props.setIsEdited(false);
+    props.setTextFieldTags('');
+    props.setTextFieldTitle('');
+    props.setTextFieldContent('');
     event.preventDefault();
   };
 
@@ -47,7 +53,6 @@ const TextInput = (props) => {
 
     return dd + '/' + mm + '/' + yyyy;
   };
-
   return (
     <Fragment>
       <TextField
@@ -62,7 +67,13 @@ const TextInput = (props) => {
       />
       <Editor
         value={props.textFieldContent !== '' ? props.textFieldContent : ''}
-        onInit={(evt, editor) => (editorRef.current = editor)}
+        onInit={(_evt, editor) => {
+          setText(editor.getContent());
+        }}
+        onEditorChange={(newValue, editor) => {
+          props.setTextFieldContent(newValue);
+          setText(editor.getContent());
+        }}
       />
       <TextField
         required

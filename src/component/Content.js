@@ -18,6 +18,12 @@ const Content = (props) => {
           textFieldTitle={textFieldTitle}
           textFieldContent={textFieldContent}
           id={id}
+          contentLength={props.contentLength}
+          isEdited={props.isEdited}
+          setIsEdited={props.setIsEdited}
+          setTextFieldContent={setTextFieldContent}
+          setTextFieldTitle={setTextFieldTitle}
+          setTextFieldTags={setTextFieldTags}
         />
       ) : (
         props.content.map((content, index) => (
@@ -29,6 +35,7 @@ const Content = (props) => {
             setTextFieldTitle={setTextFieldTitle}
             setTextFieldContent={setTextFieldContent}
             setId={setId}
+            setIsEdited={props.setIsEdited}
           />
         ))
       )}

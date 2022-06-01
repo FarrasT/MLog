@@ -9,6 +9,7 @@ const Card = (props) => {
     props.setTextFieldTitle(props.content.title);
     props.setTextFieldContent(props.content.content);
     props.setId(props.content.id);
+    props.setIsEdited(true);
   };
   const onDeleteHandle = () => {
     DeleteData(props.content.id);
