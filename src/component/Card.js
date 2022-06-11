@@ -8,12 +8,16 @@ const Card = (props) => {
     props.setTextFieldTags(props.content.tags);
     props.setTextFieldTitle(props.content.title);
     props.setTextFieldContent(props.content.content);
+    props.setTextFieldWriter(props.content.writer);
     props.setId(props.content.id);
     props.setIsEdited(true);
   };
   const onDeleteHandle = () => {
     DeleteData(props.content.id);
+    props.onRefreshHandler();
+    props.onRefreshHandler();
   };
+
   return (
     <div className={classes.card}>
       <h1>{props.content.title}</h1>

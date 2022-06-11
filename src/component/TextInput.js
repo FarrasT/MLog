@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import TextField from '@mui/material/TextField';
 import classes from './TextInput.module.css';
@@ -8,26 +8,40 @@ import PostData from '../api/postData';
 import EditData from '../api/editData';
 
 const TextInput = (props) => {
-  const [title, setTitle] = useState('');
-  const [tags, setTags] = useState('');
   const [isFilled, setIsFilled] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const [text, setText] = useState();
+
+  useEffect(() => {
+    props.textFieldTitle !== ''
+      ? props.setTextFieldTitle(props.textFieldTitle)
+      : props.setTextFieldTitle('');
+    props.textFieldContent !== ''
+      ? props.setTextFieldContent(props.textFieldContent)
+      : props.setTextFieldContent('');
+    props.textFieldTags !== ''
+      ? props.setTextFieldTags(props.textFieldTags)
+      : props.setTextFieldTags('');
+    props.textFieldWriter !== ''
+      ? props.setTextFieldWriter(props.textFieldWriter)
+      : props.setTextFieldWriter('');
+  }, []);
 
   const onClickHandler = (event) => {
     setIsClicked(true);
     if (
-      (tags === '' || title === '' || text === '') &&
-      props.textFieldTitle === ''
+      props.textFieldTags === '' ||
+      props.textFieldTitle === '' ||
+      props.textFieldContent === '' ||
+      props.textFieldWriter === ''
     ) {
       return;
     }
     setIsFilled(true);
     const data = {
-      title: props.textFieldTitle !== '' ? props.textFieldTitle : title,
-      content: props.textFieldContent !== '' ? props.textFieldContent : text,
-      tags: props.textFieldTags !== '' ? props.textFieldTags : tags,
-      writer: 'Farras Timorremboko',
+      title: props.textFieldTitle,
+      content: props.textFieldContent,
+      tags: props.textFieldTags,
+      writer: props.textFieldWriter,
       date: getDate(),
     };
     props.isEdited
@@ -35,10 +49,6 @@ const TextInput = (props) => {
       : PostData(data, props.contentLength);
 
     props.onBackHandler();
-    props.setIsEdited(false);
-    props.setTextFieldTags('');
-    props.setTextFieldTitle('');
-    props.setTextFieldContent('');
     event.preventDefault();
   };
 
@@ -61,18 +71,17 @@ const TextInput = (props) => {
         label='Title'
         className={classes.title}
         onChange={(title) => {
-          setTitle(title.target.value);
+          props.setTextFieldTitle(title.target.value);
         }}
         defaultValue={props.textFieldTitle}
       />
       <Editor
-        value={props.textFieldContent !== '' ? props.textFieldContent : ''}
+        value={props.textFieldContent}
         onInit={(_evt, editor) => {
-          setText(editor.getContent());
+          props.setTextFieldContent(editor.getContent());
         }}
-        onEditorChange={(newValue, editor) => {
+        onEditorChange={(newValue, _) => {
           props.setTextFieldContent(newValue);
-          setText(editor.getContent());
         }}
       />
       <TextField
@@ -81,9 +90,19 @@ const TextInput = (props) => {
         label='Tags'
         className={classes.tags}
         onChange={(tags) => {
-          setTags(tags.target.value);
+          props.setTextFieldTags(tags.target.value);
         }}
         defaultValue={props.textFieldTags}
+      />
+      <TextField
+        required
+        id='outlined-required'
+        label='Writer'
+        className={classes.writer}
+        onChange={(writer) => {
+          props.setTextFieldWriter(writer.target.value);
+        }}
+        defaultValue={props.textFieldWriter}
       />
       <Stack spacing={2} direction='row'>
         <Button variant='contained' size='small' onClick={onClickHandler}>
@@ -93,7 +112,7 @@ const TextInput = (props) => {
           Cancel
         </Button>
       </Stack>
-      {!isFilled && isClicked && <p>Harap isi judul, isi dan tags</p>}
+      {!isFilled && isClicked && <p>Harap isi judul, isi, tags dan penulis</p>}
     </Fragment>
   );
 };

@@ -4,9 +4,6 @@ import TextInput from './TextInput';
 import { useState } from 'react';
 
 const Content = (props) => {
-  const [textFieldContent, setTextFieldContent] = useState('');
-  const [textFieldTitle, setTextFieldTitle] = useState('');
-  const [textFieldTags, setTextFieldTags] = useState('');
   const [id, setId] = useState('');
   return (
     <div className={classes.container}>
@@ -14,16 +11,18 @@ const Content = (props) => {
         <TextInput
           onBackHandler={props.onBackHandler}
           allData={props.allData}
-          textFieldTags={textFieldTags}
-          textFieldTitle={textFieldTitle}
-          textFieldContent={textFieldContent}
+          textFieldTags={props.textFieldTags}
+          textFieldTitle={props.textFieldTitle}
+          textFieldContent={props.textFieldContent}
+          textFieldWriter={props.textFieldWriter}
           id={id}
           contentLength={props.contentLength}
           isEdited={props.isEdited}
           setIsEdited={props.setIsEdited}
-          setTextFieldContent={setTextFieldContent}
-          setTextFieldTitle={setTextFieldTitle}
-          setTextFieldTags={setTextFieldTags}
+          setTextFieldContent={props.setTextFieldContent}
+          setTextFieldTitle={props.setTextFieldTitle}
+          setTextFieldTags={props.setTextFieldTags}
+          setTextFieldWriter={props.setTextFieldWriter}
         />
       ) : (
         props.content.map((content, index) => (
@@ -31,11 +30,13 @@ const Content = (props) => {
             key={index}
             content={content}
             setNewArticle={props.setNewArticle}
-            setTextFieldTags={setTextFieldTags}
-            setTextFieldTitle={setTextFieldTitle}
-            setTextFieldContent={setTextFieldContent}
+            setTextFieldTags={props.setTextFieldTags}
+            setTextFieldTitle={props.setTextFieldTitle}
+            setTextFieldContent={props.setTextFieldContent}
+            setTextFieldWriter={props.setTextFieldWriter}
             setId={setId}
             setIsEdited={props.setIsEdited}
+            onRefreshHandler={props.onRefreshHandler}
           />
         ))
       )}
