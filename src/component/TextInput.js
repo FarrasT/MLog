@@ -76,6 +76,7 @@ const TextInput = (props) => {
         defaultValue={props.textFieldTitle}
       />
       <Editor
+        className={classes.editor}
         value={props.textFieldContent}
         onInit={(_evt, editor) => {
           props.setTextFieldContent(editor.getContent());
@@ -112,7 +113,11 @@ const TextInput = (props) => {
           Cancel
         </Button>
       </Stack>
-      {!isFilled && isClicked && <p>Harap isi judul, isi, tags dan penulis</p>}
+      {!isFilled && isClicked && (
+        <div className={classes.attention}>
+          <p>Harap isi judul, isi, tags dan penulis</p>
+        </div>
+      )}
     </Fragment>
   );
 };
